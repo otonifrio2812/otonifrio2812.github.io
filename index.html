@@ -135,6 +135,13 @@
             font-size: 18px;
         }
 
+        /* 複製成功時的按鈕樣式 */
+        .link-btn.copied {
+            background-color: #e8f5e9;
+            border-color: #c8e6c9;
+            color: #2e7d32;
+        }
+
         /* === 小提示文字 === */
         .hint-text {
             margin-top: 32px;
@@ -189,8 +196,8 @@
                 <a href="https://github.com/otonifrio2812" target="_blank" class="link-btn">
                     <span class="icon">🐙</span> GitHub
                 </a>
-                <a href="mailto:wind2812@gmail.com" class="link-btn">
-                    <span class="icon">✉️</span> wind2812@gmail.com
+                <a href="#" class="link-btn" id="email-btn">
+                    <span class="icon" id="email-icon">✉️</span> <span id="email-text">wind2812@gmail.com</span>
                 </a>
             </div>
 
@@ -229,6 +236,38 @@
                 currentColorIndex = newIndex;
                 this.style.backgroundColor = pastelColors[currentColorIndex];
             }
+        });
+
+        // === Email 點擊複製邏輯 ===
+        const emailBtn = document.getElementById('email-btn');
+        const emailText = document.getElementById('email-text');
+        const emailIcon = document.getElementById('email-icon');
+
+        emailBtn.addEventListener('click', function(e) {
+            e.preventDefault(); // 防止網頁跳轉
+
+            // 建立隱藏的文字輸入框來執行複製
+            const tempInput = document.createElement('textarea');
+            tempInput.value = 'wind2812@gmail.com';
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy'); // 執行複製
+            document.body.removeChild(tempInput);
+
+            // 更改按鈕外觀給予反饋
+            const originalText = emailText.innerText;
+            const originalIcon = emailIcon.innerText;
+            
+            emailText.innerText = '信箱已複製！';
+            emailIcon.innerText = '✔️';
+            emailBtn.classList.add('copied');
+
+            // 2秒後恢復原狀
+            setTimeout(() => {
+                emailText.innerText = originalText;
+                emailIcon.innerText = originalIcon;
+                emailBtn.classList.remove('copied');
+            }, 2000);
         });
     </script>
 </body>
